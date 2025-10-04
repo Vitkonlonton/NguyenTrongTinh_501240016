@@ -1,155 +1,526 @@
 .home {
-  padding-top: 120px;
   min-height: 100vh;
 }
 
+/* Hero Section */
 .hero-section {
-  background: linear-gradient(135deg, #000000 0%, #333333 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   color: white;
-  padding: 4rem 0;
+  padding: 0;
+  position: relative;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: relative;
+  z-index: 2;
   text-align: center;
 }
 
 .hero-content h1 {
-  font-size: 3rem;
+  font-size: 3.5rem;
   margin-bottom: 1rem;
   font-weight: 300;
   letter-spacing: 3px;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+  animation: fadeInUp 1s ease;
 }
 
 .hero-subtitle {
-  font-size: 1.2rem;
-  color: #ccc;
+  font-size: 1.4rem;
+  color: #e0e0e0;
   font-style: italic;
+  letter-spacing: 2px;
+  animation: fadeInUp 1s ease 0.3s both;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
+/* Introduction Section */
 .intro-section {
-  padding: 4rem 0;
-  background: #f8f8f8;
+  padding: 5rem 0;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
-.intro-section h2 {
+.section-title {
   text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 3rem;
-  color: #333;
+  font-size: 2.8rem;
+  margin-bottom: 4rem;
+  color: #2c2c2c;
+  font-weight: 300;
+  letter-spacing: 1px;
 }
 
 .intro-content {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 3rem;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 4rem;
   align-items: start;
 }
 
-.intro-text h3 {
-  color: #333;
-  margin: 2rem 0 1rem 0;
-  font-size: 1.5rem;
+.intro-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
 }
 
-.intro-text p {
+.intro-block h3 {
+  color: #2c2c2c;
+  margin-bottom: 1.2rem;
+  font-size: 1.6rem;
+  font-weight: 500;
+  border-left: 4px solid #d32f2f;
+  padding-left: 1rem;
+}
+
+.intro-block p {
   line-height: 1.8;
-  color: #666;
-  margin-bottom: 1.5rem;
-  font-size: 1.1rem;
-}
-
-.intro-text ul {
-  list-style: none;
-  padding: 0;
-}
-
-.intro-text li {
-  padding: 0.8rem 0;
-  font-size: 1.1rem;
   color: #555;
-  border-bottom: 1px solid #eee;
+  font-size: 1.1rem;
+  text-align: justify;
 }
 
-.intro-text li:last-child {
-  border-bottom: none;
+.benefits-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.2rem;
 }
 
-.intro-text strong {
-  color: #333;
+.benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.2rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.benefit-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.benefit-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.benefit-item div {
+  flex: 1;
+}
+
+.benefit-item strong {
+  color: #2c2c2c;
+  font-size: 1.1rem;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.benefit-item p {
+  color: #666;
+  font-size: 0.95rem;
+  margin: 0;
+  line-height: 1.5;
 }
 
 .cta-section {
-  background: white;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  margin-top: 2rem;
+  background: linear-gradient(135deg, #2c2c2c, #404040);
+  color: white;
+  padding: 2.5rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
 }
 
 .cta-section h3 {
-  color: #000;
-  margin-bottom: 1rem;
+  color: #fff;
+  margin-bottom: 1.2rem;
+  font-size: 1.5rem;
+  border-left: 4px solid #d32f2f;
+  padding-left: 1rem;
+}
+
+.cta-section p {
+  color: #e0e0e0;
+  margin: 0;
+  line-height: 1.7;
+}
+
+/* Perfume Visual */
+/* Perfume Visual với ảnh thật */
+.intro-visual {
+  position: sticky;
+  top: 140px;
+}
+
+.perfume-image-container {
+  position: relative;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  background: linear-gradient(135deg, #2c2c2c, #404040);
+}
+
+.perfume-real-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.perfume-image-container:hover .perfume-real-image {
+  transform: scale(1.05);
+}
+
+.image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.8));
+  color: white;
+  padding: 2rem;
+  text-align: center;
+}
+
+.image-overlay h4 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.image-overlay p {
+  font-size: 1rem;
+  opacity: 0.9;
+  font-style: italic;
+  margin: 0;
+}
+
+.floating-notes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.note {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 10px 16px;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  color: #2c2c2c;
+  font-weight: 600;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  animation: floatNote 8s ease-in-out infinite;
+  border: 2px solid #d32f2f;
+  backdrop-filter: blur(10px);
+}
+
+.note-1 {
+  top: 15%;
+  left: 10%;
+  animation-delay: 0s;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.note-2 {
+  top: 25%;
+  left: 75%;
+  animation-delay: 2s;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.note-3 {
+  top: 65%;
+  left: 15%;
+  animation-delay: 4s;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.note-4 {
+  top: 75%;
+  left: 70%;
+  animation-delay: 6s;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+@keyframes floatNote {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+    opacity: 0.8;
+  }
+  25% {
+    transform: translateY(-15px) rotate(3deg) scale(1.05);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-25px) rotate(-2deg) scale(1.1);
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(-15px) rotate(2deg) scale(1.05);
+    opacity: 1;
+  }
+}
+
+/* Responsive cho ảnh thật */
+@media (max-width: 968px) {
+  .intro-content {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  .intro-visual {
+    order: -1;
+    position: static;
+  }
+  
+  .perfume-image-container {
+    height: 400px;
+  }
+  
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .note {
+    font-size: 0.8rem;
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 2.2rem;
+  }
+  
+  .intro-block h3 {
+    font-size: 1.4rem;
+  }
+  
+  .benefit-item {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .perfume-image-container {
+    height: 300px;
+  }
+  
+  .image-overlay {
+    padding: 1.5rem;
+  }
+  
+  .image-overlay h4 {
+    font-size: 1.2rem;
+  }
+  
+  .image-overlay p {
+    font-size: 0.9rem;
+  }
+  
+  .note {
+    padding: 6px 10px;
+    font-size: 0.7rem;
+  }
+  
+  .note-1 { top: 10%; left: 5%; }
+  .note-2 { top: 20%; left: 70%; }
+  .note-3 { top: 60%; left: 10%; }
+  .note-4 { top: 70%; left: 65%; }
 }
 
 .perfume-showcase {
   position: relative;
-  height: 400px;
+  height: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.perfume-bottle {
+.perfume-bottle-main {
+  position: relative;
+  z-index: 3;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+.bottle-body {
   width: 120px;
   height: 200px;
-  background: linear-gradient(45deg, #000, #333);
-  border-radius: 10px;
+  background: linear-gradient(45deg, #2c2c2c, #4a4a4a);
+  border-radius: 10px 10px 30px 30px;
   position: relative;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  border: 2px solid #444;
 }
 
-.perfume-bottle::before {
-  content: '';
+.bottle-neck {
+  width: 40px;
+  height: 50px;
+  background: linear-gradient(45deg, #333, #555);
   position: absolute;
-  top: -20px;
+  top: -50px;
   left: 50%;
   transform: translateX(-50%);
-  width: 40px;
-  height: 40px;
-  background: #666;
-  border-radius: 50%;
+  border-radius: 5px 5px 0 0;
 }
 
-.scent-waves {
+.bottle-cap {
+  width: 50px;
+  height: 20px;
+  background: linear-gradient(45deg, #d32f2f, #b71c1c);
+  position: absolute;
+  top: -70px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 10px 10px 5px 5px;
+  box-shadow: 0 5px 15px rgba(211, 47, 47, 0.3);
+}
+
+.scent-aura {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-  animation: pulse 3s infinite;
+  background: radial-gradient(circle, rgba(211, 47, 47, 0.1) 0%, transparent 70%);
+  animation: pulse 4s ease-in-out infinite;
+  border-radius: 50%;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
+  0%, 100% { 
+    opacity: 0.3; 
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% { 
+    opacity: 0.6; 
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+.floating-notes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.note {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: #2c2c2c;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  animation: floatNote 8s ease-in-out infinite;
+}
+
+.note-1 {
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.note-2 {
+  top: 60%;
+  left: 80%;
+  animation-delay: 2s;
+}
+
+.note-3 {
+  top: 80%;
+  left: 20%;
+  animation-delay: 4s;
+}
+
+.note-4 {
+  top: 40%;
+  left: 70%;
+  animation-delay: 6s;
+}
+
+@keyframes floatNote {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+    opacity: 1;
+  }
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-  .hero-content h1 {
-    font-size: 2rem;
-  }
-  
+@media (max-width: 968px) {
   .intro-content {
     grid-template-columns: 1fr;
+    gap: 3rem;
   }
   
-  .home {
-    padding-top: 160px;
+  .intro-visual {
+    order: -1;
+    position: static;
+  }
+  
+  .perfume-showcase {
+    height: 300px;
+  }
+  
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 2.2rem;
+  }
+  
+  .intro-block h3 {
+    font-size: 1.4rem;
+  }
+  
+  .benefit-item {
+    flex-direction: column;
+    text-align: center;
   }
 }

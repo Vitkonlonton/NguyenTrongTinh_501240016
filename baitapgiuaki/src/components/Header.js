@@ -1,11 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './Header.css';
 
 const Header = ({ cartItems, currentPage, onPageChange }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleMenuClick = (page) => {
+    onPageChange(page);
+    setIsDropdownOpen(false);
   };
 
   const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
@@ -19,18 +39,18 @@ const Header = ({ cartItems, currentPage, onPageChange }) => {
         </div>
         
         <div className="header-controls">
-          <div className="dropdown">
+          <div className="dropdown" ref={dropdownRef}>
             <button className="dropdown-toggle" onClick={toggleDropdown}>
               ☰ Menu
             </button>
             {isDropdownOpen && (
               <div className="dropdown-menu">
-                <button onClick={() => onPageChange('home')}>Trang chủ</button>
-                <button onClick={() => onPageChange('products')}>Sản phẩm</button>
-                <button onClick={() => onPageChange('cart')}>
-                  Giỏ hàng ({cartItemCount})
+                <button onClick={() => handleMenuClick('home')}>🏠 Trang chủ</button>
+                <button onClick={() => handleMenuClick('products')}>🛍️ Sản phẩm</button>
+                <button onClick={() => handleMenuClick('cart')}>
+                  🛒 Giỏ hàng ({cartItemCount})
                 </button>
-                <button onClick={() => onPageChange('orders')}>Đơn hàng đã đặt</button>
+                <button onClick={() => handleMenuClick('orders')}>📦 Đơn hàng đã đặt</button>
               </div>
             )}
           </div>
@@ -39,7 +59,7 @@ const Header = ({ cartItems, currentPage, onPageChange }) => {
             className="cart-button"
             onClick={() => onPageChange('cart')}
           >
-            🛒 Giỏ hàng ({cartItemCount})
+            🛒 ({cartItemCount})
           </button>
         </div>
       </div>

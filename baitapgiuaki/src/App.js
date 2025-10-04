@@ -10,34 +10,83 @@ import './App.css';
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [cartItems, setCartItems] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
 
-  // Load cart from localStorage khi component mount
+  // Load data từ localStorage
   useEffect(() => {
     const savedCart = localStorage.getItem('perfumeShopCart');
+    const savedWishlist = localStorage.getItem('perfumeShopWishlist');
+    
     if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
+      const parsedCart = JSON.parse(savedCart);
+      // Đảm bảo mỗi item trong cart có đầy đủ thuộc tính
+      const validatedCart = parsedCart.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        image: item.image,
+        description: item.description,
+        quantity: item.quantity || 1
+      }));
+      setCartItems(validatedCart);
     }
+    
+    if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
   }, []);
 
-  // Save cart to localStorage khi cartItems thay đổi
+  // Lắng nghe hash changes để chuyển trang
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && ['home', 'products', 'cart', 'orders'].includes(hash)) {
+        setCurrentPage(hash);
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    handleHashChange();
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
+
+  // Save data to localStorage
   useEffect(() => {
     localStorage.setItem('perfumeShopCart', JSON.stringify(cartItems));
   }, [cartItems]);
 
+  useEffect(() => {
+    localStorage.setItem('perfumeShopWishlist', JSON.stringify(wishlist));
+  }, [wishlist]);
+
+  // HÀM ADD TO CART - FIX LỖI HÌNH ẢNH
   const addToCart = (product) => {
     setCartItems(prevItems => {
       const existingItem = prevItems.find(item => item.id === product.id);
       
       if (existingItem) {
-        // Nếu sản phẩm đã có trong giỏ, tăng số lượng
         return prevItems.map(item =>
           item.id === product.id 
-            ? { ...item, quantity: Math.min(item.quantity + 1, 100) }
+            ? { 
+                ...item, 
+                quantity: Math.min(item.quantity + 1, 100),
+                image: product.image,
+                name: product.name,
+                price: product.price,
+                description: product.description
+              }
             : item
         );
       } else {
-        // Nếu sản phẩm chưa có, thêm mới
-        return [...prevItems, { ...product, quantity: 1 }];
+        return [...prevItems, { 
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          description: product.description,
+          quantity: 1
+        }];
       }
     });
   };
@@ -58,12 +107,22 @@ function App() {
     setCartItems([]);
   };
 
+  const addToWishlist = (product) => {
+    setWishlist(prev => {
+      if (prev.some(item => item.id === product.id)) {
+        return prev.filter(item => item.id !== product.id);
+      } else {
+        return [...prev, product];
+      }
+    });
+  };
+
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
         return <Home />;
       case 'products':
-        return <Products addToCart={addToCart} />;
+        return <Products addToCart={addToCart} addToWishlist={addToWishlist} wishlist={wishlist} />;
       case 'cart':
         return (
           <Cart 
@@ -71,6 +130,7 @@ function App() {
             updateCartItem={updateCartItem}
             removeFromCart={removeFromCart}
             clearCart={clearCart}
+            onPageChange={setCurrentPage}
           />
         );
       case 'orders':
@@ -85,7 +145,10 @@ function App() {
       <Header 
         cartItems={cartItems}
         currentPage={currentPage}
-        onPageChange={setCurrentPage}
+        onPageChange={(page) => {
+          setCurrentPage(page);
+          window.location.hash = page;
+        }}
       />
       
       <main className="main-content">

@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Cart.css';
 
-const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart }) => {
+const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChange }) => {
   const [showCheckout, setShowCheckout] = useState(false);
+  const [couponCode, setCouponCode] = useState('');
+  const [discount, setDiscount] = useState(0);
   const [orderInfo, setOrderInfo] = useState({
     fullName: '',
     phone: '',
@@ -11,8 +13,34 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart }) => {
     paymentMethod: 'cash'
   });
 
-  const calculateTotal = () => {
+  // Debug: kiểm tra dữ liệu cart items
+  useEffect(() => {
+    console.log('Cart Items Data:', cartItems);
+    cartItems.forEach((item, index) => {
+      console.log(`Item ${index + 1}:`, {
+        name: item.name,
+        hasImage: !!item.image,
+        image: item.image,
+        price: item.price,
+        quantity: item.quantity
+      });
+    });
+  }, [cartItems]);
+
+  // HÀM QUAY LẠI TRANG SẢN PHẨM
+  const goBackToProducts = () => {
+    window.location.hash = 'products';
+    window.dispatchEvent(new HashChangeEvent('hashchange'));
+  };
+
+  const calculateSubtotal = () => {
     return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  };
+
+  const calculateTotal = () => {
+    const subtotal = calculateSubtotal();
+    const shipping = subtotal >= 1000000 ? 0 : 30000;
+    return subtotal - discount + shipping;
   };
 
   const calculateTotalItems = () => {
@@ -27,12 +55,65 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart }) => {
     }
   };
 
+  const applyCoupon = () => {
+    const coupons = {
+      'PERFUME10': 0.1,
+      'WELCOME20': 0.2,
+      'LUXURY15': 0.15
+    };
+    
+    if (coupons[couponCode.toUpperCase()]) {
+      const discountRate = coupons[couponCode.toUpperCase()];
+      const discountAmount = calculateSubtotal() * discountRate;
+      setDiscount(discountAmount);
+      alert(`Áp dụng mã giảm giá thành công! Giảm ${discountRate * 100}%`);
+    } else {
+      alert('Mã giảm giá không hợp lệ!');
+    }
+  };
+
   const handleCheckout = (e) => {
     e.preventDefault();
-    // Ở đây sẽ xử lý gửi email và lưu đơn hàng
-    alert('Đơn hàng đã được đặt thành công! Thông tin đã được gửi đến email của bạn.');
+    const orderData = {
+      ...orderInfo,
+      items: cartItems.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        image: item.image,
+        quantity: item.quantity
+      })),
+      total: calculateTotal(),
+      discount: discount,
+      orderDate: new Date().toISOString()
+    };
+    
+    const existingOrders = JSON.parse(localStorage.getItem('perfumeShopOrders') || '[]');
+    const newOrder = {
+      ...orderData, 
+      id: Date.now(), 
+      status: 'Đang xử lý',
+      orderNumber: 'DH' + Date.now()
+    };
+    
+    existingOrders.push(newOrder);
+    localStorage.setItem('perfumeShopOrders', JSON.stringify(existingOrders));
+    
+    alert('Đơn hàng đã được đặt thành công! Chuyển đến trang đơn hàng...');
     clearCart();
     setShowCheckout(false);
+    setDiscount(0);
+    setCouponCode('');
+    
+    // Tự động chuyển đến trang đơn hàng
+    setTimeout(() => {
+      if (onPageChange) {
+        onPageChange('orders');
+      } else {
+        window.location.hash = 'orders';
+        window.dispatchEvent(new HashChangeEvent('hashchange'));
+      }
+    }, 1500);
   };
 
   const formatPrice = (price) => {
@@ -49,97 +130,188 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart }) => {
     return deliveryDate.toLocaleDateString('vi-VN');
   };
 
+  // Hàm xử lý lỗi ảnh
+  const handleImageError = (e) => {
+    e.target.src = 'https://via.placeholder.com/300x300?text=Ảnh+sản+phẩm';
+    e.target.alt = 'Ảnh sản phẩm không khả dụng';
+  };
+
   if (showCheckout) {
+    const subtotal = calculateSubtotal();
+    const shipping = subtotal >= 1000000 ? 0 : 30000;
+    
     return (
       <div className="cart-page">
         <div className="container">
-          <div className="checkout-section">
-            <h2>Thông Tin Thanh Toán</h2>
-            <form onSubmit={handleCheckout} className="checkout-form">
-              <div className="form-group">
-                <label>Họ và Tên *</label>
-                <input
-                  type="text"
-                  required
-                  value={orderInfo.fullName}
-                  onChange={(e) => setOrderInfo({...orderInfo, fullName: e.target.value})}
-                />
+          <div className="checkout-section-luxury">
+            <div className="checkout-header">
+              <h2>🛍️ Thanh Toán</h2>
+              <p>Hoàn tất đơn hàng của bạn</p>
+            </div>
+            
+            <form onSubmit={handleCheckout} className="checkout-form-luxury">
+              <div className="form-grid">
+                <div className="form-group-luxury">
+                  <label>Họ và Tên *</label>
+                  <input
+                    type="text"
+                    required
+                    value={orderInfo.fullName}
+                    onChange={(e) => setOrderInfo({...orderInfo, fullName: e.target.value})}
+                    placeholder="Nhập họ và tên"
+                  />
+                </div>
+                
+                <div className="form-group-luxury">
+                  <label>Số Điện Thoại *</label>
+                  <input
+                    type="tel"
+                    required
+                    value={orderInfo.phone}
+                    onChange={(e) => setOrderInfo({...orderInfo, phone: e.target.value})}
+                    placeholder="Nhập số điện thoại"
+                  />
+                </div>
+                
+                <div className="form-group-luxury">
+                  <label>Email *</label>
+                  <input
+                    type="email"
+                    required
+                    value={orderInfo.email}
+                    onChange={(e) => setOrderInfo({...orderInfo, email: e.target.value})}
+                    placeholder="Nhập email"
+                  />
+                </div>
+                
+                <div className="form-group-luxury full-width">
+                  <label>Địa Chỉ Giao Hàng *</label>
+                  <textarea
+                    required
+                    value={orderInfo.address}
+                    onChange={(e) => setOrderInfo({...orderInfo, address: e.target.value})}
+                    rows="3"
+                    placeholder="Nhập địa chỉ giao hàng chi tiết"
+                  />
+                </div>
               </div>
               
-              <div className="form-group">
-                <label>Số Điện Thoại *</label>
-                <input
-                  type="tel"
-                  required
-                  value={orderInfo.phone}
-                  onChange={(e) => setOrderInfo({...orderInfo, phone: e.target.value})}
-                />
+              <div className="delivery-info-luxury">
+                <h4>🚚 Thông Tin Giao Hàng</h4>
+                <div className="delivery-details">
+                  <div className="delivery-item">
+                    <span className="delivery-icon">📅</span>
+                    <div>
+                      <strong>Ngày nhận hàng dự kiến</strong>
+                      <p>{getDeliveryDate()}</p>
+                    </div>
+                  </div>
+                  <div className="delivery-item">
+                    <span className="delivery-icon">⏰</span>
+                    <div>
+                      <strong>Thời gian giao hàng</strong>
+                      <p>08:00 - 22:00 hàng ngày</p>
+                    </div>
+                  </div>
+                  <div className="delivery-item">
+                    <span className="delivery-icon">🚚</span>
+                    <div>
+                      <strong>Phí vận chuyển</strong>
+                      <p>{shipping === 0 ? 'Miễn phí' : formatPrice(shipping)}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
               
-              <div className="form-group">
-                <label>Email *</label>
-                <input
-                  type="email"
-                  required
-                  value={orderInfo.email}
-                  onChange={(e) => setOrderInfo({...orderInfo, email: e.target.value})}
-                />
-              </div>
-              
-              <div className="form-group">
-                <label>Địa Chỉ *</label>
-                <textarea
-                  required
-                  value={orderInfo.address}
-                  onChange={(e) => setOrderInfo({...orderInfo, address: e.target.value})}
-                  rows="3"
-                />
-              </div>
-              
-              <div className="delivery-info">
-                <h4>Thông Tin Giao Hàng</h4>
-                <p>📅 <strong>Ngày nhận hàng dự kiến:</strong> {getDeliveryDate()}</p>
-              </div>
-              
-              <div className="payment-method">
-                <h4>Phương Thức Thanh Toán</h4>
-                <div className="payment-options">
-                  <label>
+              <div className="payment-method-luxury">
+                <h4>💳 Phương Thức Thanh Toán</h4>
+                <div className="payment-options-luxury">
+                  <label className="payment-option">
                     <input
                       type="radio"
                       value="cash"
                       checked={orderInfo.paymentMethod === 'cash'}
                       onChange={(e) => setOrderInfo({...orderInfo, paymentMethod: e.target.value})}
                     />
-                    💵 Tiền mặt khi nhận hàng
+                    <div className="payment-content">
+                      <span className="payment-icon">💵</span>
+                      <div>
+                        <strong>Tiền mặt khi nhận hàng</strong>
+                        <p>Thanh toán khi nhận được hàng</p>
+                      </div>
+                    </div>
                   </label>
-                  <label>
+                  <label className="payment-option">
                     <input
                       type="radio"
                       value="transfer"
                       checked={orderInfo.paymentMethod === 'transfer'}
                       onChange={(e) => setOrderInfo({...orderInfo, paymentMethod: e.target.value})}
                     />
-                    🏦 Chuyển khoản ngân hàng
+                    <div className="payment-content">
+                      <span className="payment-icon">🏦</span>
+                      <div>
+                        <strong>Chuyển khoản ngân hàng</strong>
+                        <p>Chuyển khoản trước khi giao hàng</p>
+                      </div>
+                    </div>
                   </label>
                 </div>
               </div>
               
-              <div className="order-summary-checkout">
-                <h4>Tóm Tắt Đơn Hàng</h4>
-                <p>Số lượng: {calculateTotalItems()} sản phẩm</p>
-                <p className="total-price">Tổng tiền: {formatPrice(calculateTotal())}</p>
+              <div className="order-summary-checkout-luxury">
+                <h4>📦 Tóm Tắt Đơn Hàng</h4>
+                <div className="order-items-preview">
+                  {cartItems.map(item => (
+                    <div key={item.id} className="order-preview-item">
+                      <div className="preview-item-image">
+                        <img 
+                          src={item.image} 
+                          alt={item.name}
+                          onError={handleImageError}
+                        />
+                      </div>
+                      <div className="preview-item-details">
+                        <span className="preview-item-name">{item.name}</span>
+                        <span className="preview-item-quantity">Số lượng: {item.quantity}</span>
+                      </div>
+                      <span className="preview-item-total">
+                        {formatPrice(item.price * item.quantity)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <div className="summary-totals">
+                  <div className="summary-row">
+                    <span>Tạm tính:</span>
+                    <span>{formatPrice(subtotal)}</span>
+                  </div>
+                  {discount > 0 && (
+                    <div className="summary-row discount">
+                      <span>Giảm giá:</span>
+                      <span>-{formatPrice(discount)}</span>
+                    </div>
+                  )}
+                  <div className="summary-row shipping">
+                    <span>Phí vận chuyển:</span>
+                    <span>{shipping === 0 ? 'Miễn phí' : formatPrice(shipping)}</span>
+                  </div>
+                  <div className="summary-row total">
+                    <span>Tổng thanh toán:</span>
+                    <span>{formatPrice(calculateTotal())}</span>
+                  </div>
+                </div>
               </div>
               
-              <div className="checkout-buttons">
+              <div className="checkout-buttons-luxury">
                 <button 
                   type="button" 
-                  className="back-btn"
+                  className="back-btn-luxury"
                   onClick={() => setShowCheckout(false)}
                 >
-                  Quay lại giỏ hàng
+                  ← Quay lại giỏ hàng
                 </button>
-                <button type="submit" className="complete-order-btn">
+                <button type="submit" className="complete-order-btn-luxury">
                   ✅ Hoàn Thành Đặt Hàng
                 </button>
               </div>
@@ -150,51 +322,74 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart }) => {
     );
   }
 
+  const subtotal = calculateSubtotal();
+  const shipping = subtotal >= 1000000 ? 0 : 30000;
+
   return (
     <div className="cart-page">
       <div className="container">
-        <h1>Giỏ Hàng Của Bạn</h1>
+        <div className="cart-header">
+          <h1>🛒 Giỏ Hàng Của Bạn</h1>
+          <p>Kiểm tra và hoàn tất đơn hàng</p>
+        </div>
         
         {cartItems.length === 0 ? (
-          <div className="empty-cart">
-            <p>Giỏ hàng của bạn đang trống</p>
-            <button onClick={() => window.location.href = '#products'}>
+          <div className="empty-cart-luxury">
+            <div className="empty-cart-icon">🛒</div>
+            <h3>Giỏ hàng của bạn đang trống</h3>
+            <p>Hãy khám phá các sản phẩm tuyệt vời của chúng tôi</p>
+            <button 
+              className="continue-shopping-btn"
+              onClick={goBackToProducts}
+            >
               Tiếp tục mua sắm
             </button>
           </div>
         ) : (
-          <>
-            <div className="cart-items">
+          <div className="cart-content">
+            <div className="cart-items-luxury">
               {cartItems.map(item => (
-                <div key={item.id} className="cart-item">
-                  <div className="item-image">
-                    <img src={item.image} alt={item.name} />
+                <div key={item.id} className="cart-item-luxury">
+                  <div className="item-image-luxury">
+                    <img 
+                      src={item.image} 
+                      alt={item.name}
+                      onError={handleImageError}
+                    />
                   </div>
-                  <div className="item-details">
+                  <div className="item-details-luxury">
                     <h3>{item.name}</h3>
-                    <p className="item-price">{formatPrice(item.price)}</p>
+                    <p className="item-description">{item.description}</p>
+                    <p className="item-price-single">{formatPrice(item.price)}</p>
                   </div>
-                  <div className="quantity-controls">
+                  <div className="quantity-controls-luxury">
                     <button 
                       onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
                       disabled={item.quantity <= 1}
+                      className="quantity-btn"
                     >
-                      -
+                      −
                     </button>
-                    <span>{item.quantity}</span>
+                    <span className="quantity-display">{item.quantity}</span>
                     <button 
                       onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
                       disabled={item.quantity >= 100}
+                      className="quantity-btn"
                     >
                       +
                     </button>
                   </div>
-                  <div className="item-total">
+                  <div className="item-total-luxury">
                     {formatPrice(item.price * item.quantity)}
                   </div>
                   <button 
-                    className="remove-btn"
-                    onClick={() => removeFromCart(item.id)}
+                    className="remove-btn-luxury"
+                    onClick={() => {
+                      if (window.confirm(`Bạn có chắc muốn xóa "${item.name}" khỏi giỏ hàng?`)) {
+                        removeFromCart(item.id);
+                      }
+                    }}
+                    title="Xóa sản phẩm"
                   >
                     🗑️
                   </button>
@@ -202,19 +397,89 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart }) => {
               ))}
             </div>
             
-            <div className="cart-summary">
-              <div className="summary-details">
-                <p>Tổng số lượng: <strong>{calculateTotalItems()}</strong></p>
-                <p className="total-price">Tổng tiền: <strong>{formatPrice(calculateTotal())}</strong></p>
+            <div className="cart-sidebar">
+              <div className="coupon-section">
+                <h4>🎁 Mã Giảm Giá</h4>
+                <div className="coupon-input-group">
+                  <input
+                    type="text"
+                    placeholder="Nhập mã giảm giá"
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value)}
+                    className="coupon-input"
+                  />
+                  <button 
+                    onClick={applyCoupon} 
+                    className="apply-coupon-btn"
+                    disabled={!couponCode.trim()}
+                  >
+                    Áp dụng
+                  </button>
+                </div>
+                <div className="coupon-codes">
+                  <p>Mã khuyến mãi có sẵn:</p>
+                  <div className="available-coupons">
+                    <span className="coupon-tag" title="Giảm 10%">PERFUME10</span>
+                    <span className="coupon-tag" title="Giảm 20%">WELCOME20</span>
+                    <span className="coupon-tag" title="Giảm 15%">LUXURY15</span>
+                  </div>
+                </div>
               </div>
-              <button 
-                className="checkout-btn"
-                onClick={() => setShowCheckout(true)}
-              >
-                Thanh Toán
-              </button>
+              
+              <div className="cart-summary-luxury">
+                <h4>📋 Tóm Tắt Đơn Hàng</h4>
+                <div className="summary-details-luxury">
+                  <div className="summary-row">
+                    <span>Số lượng sản phẩm:</span>
+                    <span>{calculateTotalItems()}</span>
+                  </div>
+                  <div className="summary-row">
+                    <span>Tạm tính:</span>
+                    <span>{formatPrice(subtotal)}</span>
+                  </div>
+                  {discount > 0 && (
+                    <div className="summary-row discount">
+                      <span>Giảm giá:</span>
+                      <span>-{formatPrice(discount)}</span>
+                    </div>
+                  )}
+                  <div className="summary-row shipping">
+                    <span>Phí vận chuyển:</span>
+                    <span>{shipping === 0 ? 'Miễn phí' : formatPrice(shipping)}</span>
+                  </div>
+                  <div className="summary-row total">
+                    <span>Tổng thanh toán:</span>
+                    <span>{formatPrice(calculateTotal())}</span>
+                  </div>
+                </div>
+                
+                <button 
+                  className="checkout-btn-luxury"
+                  onClick={() => setShowCheckout(true)}
+                >
+                  🛍️ Tiến Hành Thanh Toán
+                </button>
+                
+                <button 
+                  className="continue-shopping-btn"
+                  onClick={goBackToProducts}
+                >
+                  ← Tiếp tục mua sắm
+                </button>
+
+                <button 
+                  className="clear-cart-btn"
+                  onClick={() => {
+                    if (window.confirm('Bạn có chắc muốn xóa tất cả sản phẩm khỏi giỏ hàng?')) {
+                      clearCart();
+                    }
+                  }}
+                >
+                  🗑️ Xóa giỏ hàng
+                </button>
+              </div>
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>

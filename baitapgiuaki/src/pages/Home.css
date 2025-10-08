@@ -524,3 +524,149 @@
     text-align: center;
   }
 }
+/* Bootstrap Icons for Home */
+.benefit-icon .bi {
+  font-size: 2rem;
+}
+
+.note .bi {
+  font-size: 0.9rem;
+}
+/* Enhanced Responsive */
+@media (max-width: 1200px) {
+  .intro-content {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  .intro-visual {
+    order: -1;
+    position: static;
+  }
+}
+
+@media (max-width: 968px) {
+  .hero-content h1 {
+    font-size: 2.8rem;
+  }
+  
+  .section-title {
+    font-size: 2.4rem;
+  }
+  
+  .intro-block h3 {
+    font-size: 1.4rem;
+  }
+  
+  .perfume-image-container {
+    height: 400px;
+  }
+  
+  .note {
+    font-size: 0.8rem;
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    height: 50vh;
+  }
+  
+  .hero-content h1 {
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .intro-section {
+    padding: 3rem 0;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
+  }
+  
+  .intro-block h3 {
+    font-size: 1.3rem;
+  }
+  
+  .benefit-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.8rem;
+  }
+  
+  .benefit-icon {
+    align-self: center;
+  }
+  
+  .perfume-image-container {
+    height: 300px;
+  }
+  
+  .image-overlay {
+    padding: 1.5rem;
+  }
+  
+  .image-overlay h4 {
+    font-size: 1.2rem;
+  }
+  
+  .image-overlay p {
+    font-size: 0.9rem;
+  }
+  
+  .note {
+    padding: 6px 10px;
+    font-size: 0.7rem;
+  }
+  
+  .note-1 { top: 10%; left: 5%; }
+  .note-2 { top: 20%; left: 70%; }
+  .note-3 { top: 60%; left: 10%; }
+  .note-4 { top: 70%; left: 65%; }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    height: 40vh;
+  }
+  
+  .hero-content h1 {
+    font-size: 1.8rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.7rem;
+  }
+  
+  .intro-block h3 {
+    font-size: 1.2rem;
+  }
+  
+  .intro-block p {
+    font-size: 1rem;
+    text-align: left;
+  }
+  
+  .cta-section {
+    padding: 1.5rem;
+  }
+  
+  .perfume-image-container {
+    height: 250px;
+  }
+  
+  .floating-notes {
+    display: none; /* Ẩn floating notes trên mobile nhỏ */
+  }
+}

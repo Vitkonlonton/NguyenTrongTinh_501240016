@@ -471,3 +471,139 @@
     min-width: auto;
   }
 }
+/* Bootstrap Icons for Orders */
+.order-status .bi {
+  font-size: 1rem;
+}
+
+.preview-item .bi {
+  font-size: 0.8rem;
+}
+
+.delivery-info-detailed .bi {
+  width: 20px;
+  text-align: center;
+}
+/* Enhanced Responsive */
+@media (max-width: 1200px) {
+  .orders-stats {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 968px) {
+  .order-header-luxury {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .order-total-luxury {
+    text-align: center;
+  }
+  
+  .detailed-item {
+    grid-template-columns: 50px 1fr;
+    gap: 1rem;
+    text-align: left;
+  }
+  
+  .item-quantity-detailed,
+  .item-total-detailed {
+    grid-column: 1 / -1;
+    justify-self: start;
+    margin-top: 0.5rem;
+  }
+  
+  .preview-items-grid {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .orders-page {
+    padding: 160px 0 2rem 0;
+  }
+  
+  .orders-header h1 {
+    font-size: 2.2rem;
+  }
+  
+  .orders-stats {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .stat-card {
+    padding: 1.5rem;
+  }
+  
+  .order-actions-luxury {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.8rem;
+  }
+  
+  .preview-items-grid {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.8rem;
+  }
+  
+  .preview-item {
+    min-width: auto;
+    justify-content: flex-start;
+  }
+  
+  .order-details-luxury {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .orders-page {
+    padding: 140px 0 1rem 0;
+  }
+  
+  .orders-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .orders-header p {
+    font-size: 1rem;
+  }
+  
+  .order-card-luxury {
+    margin: 0.5rem 0;
+  }
+  
+  .order-header-luxury,
+  .order-preview-items,
+  .order-actions-luxury {
+    padding: 1rem;
+  }
+  
+  .order-basic-info h3 {
+    font-size: 1.1rem;
+  }
+  
+  .preview-item {
+    padding: 0.6rem;
+  }
+  
+  .preview-item img {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .detailed-item {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 0.8rem;
+    padding: 1rem;
+  }
+  
+  .item-image-detailed {
+    justify-self: center;
+  }
+}

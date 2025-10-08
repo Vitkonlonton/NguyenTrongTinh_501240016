@@ -5,7 +5,6 @@ const Header = ({ cartItems, currentPage, onPageChange }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -41,16 +40,22 @@ const Header = ({ cartItems, currentPage, onPageChange }) => {
         <div className="header-controls">
           <div className="dropdown" ref={dropdownRef}>
             <button className="dropdown-toggle" onClick={toggleDropdown}>
-              ☰ Menu
+              <i className="bi bi-list"></i> Menu
             </button>
             {isDropdownOpen && (
               <div className="dropdown-menu">
-                <button onClick={() => handleMenuClick('home')}>🏠 Trang chủ</button>
-                <button onClick={() => handleMenuClick('products')}>🛍️ Sản phẩm</button>
-                <button onClick={() => handleMenuClick('cart')}>
-                  🛒 Giỏ hàng ({cartItemCount})
+                <button onClick={() => handleMenuClick('home')}>
+                  <i className="bi bi-house me-2"></i>Trang chủ
                 </button>
-                <button onClick={() => handleMenuClick('orders')}>📦 Đơn hàng đã đặt</button>
+                <button onClick={() => handleMenuClick('products')}>
+                  <i className="bi bi-bag me-2"></i>Sản phẩm
+                </button>
+                <button onClick={() => handleMenuClick('cart')}>
+                  <i className="bi bi-cart3 me-2"></i>Giỏ hàng ({cartItemCount})
+                </button>
+                <button onClick={() => handleMenuClick('orders')}>
+                  <i className="bi bi-receipt me-2"></i>Đơn hàng đã đặt
+                </button>
               </div>
             )}
           </div>
@@ -59,7 +64,7 @@ const Header = ({ cartItems, currentPage, onPageChange }) => {
             className="cart-button"
             onClick={() => onPageChange('cart')}
           >
-            🛒 ({cartItemCount})
+            <i className="bi bi-cart3 me-1"></i>({cartItemCount})
           </button>
         </div>
       </div>

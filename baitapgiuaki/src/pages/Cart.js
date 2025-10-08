@@ -145,14 +145,14 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChan
         <div className="container">
           <div className="checkout-section-luxury">
             <div className="checkout-header">
-              <h2>🛍️ Thanh Toán</h2>
+              <h2><i className="bi bi-bag-check me-2"></i> Thanh Toán</h2>
               <p>Hoàn tất đơn hàng của bạn</p>
             </div>
             
             <form onSubmit={handleCheckout} className="checkout-form-luxury">
               <div className="form-grid">
                 <div className="form-group-luxury">
-                  <label>Họ và Tên *</label>
+                  <label><i className="bi bi-person me-2"></i>Họ và Tên *</label>
                   <input
                     type="text"
                     required
@@ -163,7 +163,7 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChan
                 </div>
                 
                 <div className="form-group-luxury">
-                  <label>Số Điện Thoại *</label>
+                  <label><i className="bi bi-phone me-2"></i>Số Điện Thoại *</label>
                   <input
                     type="tel"
                     required
@@ -174,7 +174,7 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChan
                 </div>
                 
                 <div className="form-group-luxury">
-                  <label>Email *</label>
+                  <label><i className="bi bi-envelope me-2"></i>Email *</label>
                   <input
                     type="email"
                     required
@@ -185,7 +185,7 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChan
                 </div>
                 
                 <div className="form-group-luxury full-width">
-                  <label>Địa Chỉ Giao Hàng *</label>
+                  <label><i className="bi bi-geo-alt me-2"></i>Địa Chỉ Giao Hàng *</label>
                   <textarea
                     required
                     value={orderInfo.address}
@@ -197,24 +197,30 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChan
               </div>
               
               <div className="delivery-info-luxury">
-                <h4>🚚 Thông Tin Giao Hàng</h4>
+                <h4><i className="bi bi-truck me-2"></i> Thông Tin Giao Hàng</h4>
                 <div className="delivery-details">
                   <div className="delivery-item">
-                    <span className="delivery-icon">📅</span>
+                    <span className="delivery-icon">
+                      <i className="bi bi-calendar-check"></i>
+                    </span>
                     <div>
                       <strong>Ngày nhận hàng dự kiến</strong>
                       <p>{getDeliveryDate()}</p>
                     </div>
                   </div>
                   <div className="delivery-item">
-                    <span className="delivery-icon">⏰</span>
+                    <span className="delivery-icon">
+                      <i className="bi bi-clock"></i>
+                    </span>
                     <div>
                       <strong>Thời gian giao hàng</strong>
                       <p>08:00 - 22:00 hàng ngày</p>
                     </div>
                   </div>
                   <div className="delivery-item">
-                    <span className="delivery-icon">🚚</span>
+                    <span className="delivery-icon">
+                      <i className="bi bi-truck"></i>
+                    </span>
                     <div>
                       <strong>Phí vận chuyển</strong>
                       <p>{shipping === 0 ? 'Miễn phí' : formatPrice(shipping)}</p>
@@ -224,7 +230,7 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChan
               </div>
               
               <div className="payment-method-luxury">
-                <h4>💳 Phương Thức Thanh Toán</h4>
+                <h4><i className="bi bi-credit-card me-2"></i> Phương Thức Thanh Toán</h4>
                 <div className="payment-options-luxury">
                   <label className="payment-option">
                     <input
@@ -234,7 +240,9 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChan
                       onChange={(e) => setOrderInfo({...orderInfo, paymentMethod: e.target.value})}
                     />
                     <div className="payment-content">
-                      <span className="payment-icon">💵</span>
+                      <span className="payment-icon">
+                        <i className="bi bi-cash-coin"></i>
+                      </span>
                       <div>
                         <strong>Tiền mặt khi nhận hàng</strong>
                         <p>Thanh toán khi nhận được hàng</p>
@@ -249,7 +257,9 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChan
                       onChange={(e) => setOrderInfo({...orderInfo, paymentMethod: e.target.value})}
                     />
                     <div className="payment-content">
-                      <span className="payment-icon">🏦</span>
+                      <span className="payment-icon">
+                        <i className="bi bi-bank"></i>
+                      </span>
                       <div>
                         <strong>Chuyển khoản ngân hàng</strong>
                         <p>Chuyển khoản trước khi giao hàng</p>
@@ -260,7 +270,7 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChan
               </div>
               
               <div className="order-summary-checkout-luxury">
-                <h4>📦 Tóm Tắt Đơn Hàng</h4>
+                <h4><i className="bi bi-receipt me-2"></i> Tóm Tắt Đơn Hàng</h4>
                 <div className="order-items-preview">
                   {cartItems.map(item => (
                     <div key={item.id} className="order-preview-item">
@@ -309,10 +319,10 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChan
                   className="back-btn-luxury"
                   onClick={() => setShowCheckout(false)}
                 >
-                  ← Quay lại giỏ hàng
+                  <i className="bi bi-arrow-left me-2"></i>Quay lại giỏ hàng
                 </button>
                 <button type="submit" className="complete-order-btn-luxury">
-                  ✅ Hoàn Thành Đặt Hàng
+                  <i className="bi bi-check-circle me-2"></i>Hoàn Thành Đặt Hàng
                 </button>
               </div>
             </form>
@@ -329,20 +339,22 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChan
     <div className="cart-page">
       <div className="container">
         <div className="cart-header">
-          <h1>🛒 Giỏ Hàng Của Bạn</h1>
+          <h1><i className="bi bi-cart3 me-2"></i> Giỏ Hàng Của Bạn</h1>
           <p>Kiểm tra và hoàn tất đơn hàng</p>
         </div>
         
         {cartItems.length === 0 ? (
           <div className="empty-cart-luxury">
-            <div className="empty-cart-icon">🛒</div>
+            <div className="empty-cart-icon">
+              <i className="bi bi-cart-x" style={{fontSize: '5rem'}}></i>
+            </div>
             <h3>Giỏ hàng của bạn đang trống</h3>
             <p>Hãy khám phá các sản phẩm tuyệt vời của chúng tôi</p>
             <button 
               className="continue-shopping-btn"
               onClick={goBackToProducts}
             >
-              Tiếp tục mua sắm
+              <i className="bi bi-arrow-left me-2"></i>Tiếp tục mua sắm
             </button>
           </div>
         ) : (
@@ -368,7 +380,7 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChan
                       disabled={item.quantity <= 1}
                       className="quantity-btn"
                     >
-                      −
+                      <i className="bi bi-dash"></i>
                     </button>
                     <span className="quantity-display">{item.quantity}</span>
                     <button 
@@ -376,7 +388,7 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChan
                       disabled={item.quantity >= 100}
                       className="quantity-btn"
                     >
-                      +
+                      <i className="bi bi-plus"></i>
                     </button>
                   </div>
                   <div className="item-total-luxury">
@@ -391,7 +403,7 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChan
                     }}
                     title="Xóa sản phẩm"
                   >
-                    🗑️
+                    <i className="bi bi-trash"></i>
                   </button>
                 </div>
               ))}
@@ -399,7 +411,7 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChan
             
             <div className="cart-sidebar">
               <div className="coupon-section">
-                <h4>🎁 Mã Giảm Giá</h4>
+                <h4><i className="bi bi-tag me-2"></i> Mã Giảm Giá</h4>
                 <div className="coupon-input-group">
                   <input
                     type="text"
@@ -413,42 +425,48 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChan
                     className="apply-coupon-btn"
                     disabled={!couponCode.trim()}
                   >
-                    Áp dụng
+                    <i className="bi bi-check-lg me-2"></i>Áp dụng
                   </button>
                 </div>
                 <div className="coupon-codes">
-                  <p>Mã khuyến mãi có sẵn:</p>
+                  <p><i className="bi bi-info-circle me-2"></i>Mã khuyến mãi có sẵn:</p>
                   <div className="available-coupons">
-                    <span className="coupon-tag" title="Giảm 10%">PERFUME10</span>
-                    <span className="coupon-tag" title="Giảm 20%">WELCOME20</span>
-                    <span className="coupon-tag" title="Giảm 15%">LUXURY15</span>
+                    <span className="coupon-tag" title="Giảm 10%">
+                      <i className="bi bi-percent me-1"></i>PERFUME10
+                    </span>
+                    <span className="coupon-tag" title="Giảm 20%">
+                      <i className="bi bi-percent me-1"></i>WELCOME20
+                    </span>
+                    <span className="coupon-tag" title="Giảm 15%">
+                      <i className="bi bi-percent me-1"></i>LUXURY15
+                    </span>
                   </div>
                 </div>
               </div>
               
               <div className="cart-summary-luxury">
-                <h4>📋 Tóm Tắt Đơn Hàng</h4>
+                <h4><i className="bi bi-receipt me-2"></i> Tóm Tắt Đơn Hàng</h4>
                 <div className="summary-details-luxury">
                   <div className="summary-row">
-                    <span>Số lượng sản phẩm:</span>
+                    <span><i className="bi bi-box-seam me-2"></i>Số lượng sản phẩm:</span>
                     <span>{calculateTotalItems()}</span>
                   </div>
                   <div className="summary-row">
-                    <span>Tạm tính:</span>
+                    <span><i className="bi bi-calculator me-2"></i>Tạm tính:</span>
                     <span>{formatPrice(subtotal)}</span>
                   </div>
                   {discount > 0 && (
                     <div className="summary-row discount">
-                      <span>Giảm giá:</span>
+                      <span><i className="bi bi-tag me-2"></i>Giảm giá:</span>
                       <span>-{formatPrice(discount)}</span>
                     </div>
                   )}
                   <div className="summary-row shipping">
-                    <span>Phí vận chuyển:</span>
+                    <span><i className="bi bi-truck me-2"></i>Phí vận chuyển:</span>
                     <span>{shipping === 0 ? 'Miễn phí' : formatPrice(shipping)}</span>
                   </div>
                   <div className="summary-row total">
-                    <span>Tổng thanh toán:</span>
+                    <span><i className="bi bi-currency-dollar me-2"></i>Tổng thanh toán:</span>
                     <span>{formatPrice(calculateTotal())}</span>
                   </div>
                 </div>
@@ -457,14 +475,14 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChan
                   className="checkout-btn-luxury"
                   onClick={() => setShowCheckout(true)}
                 >
-                  🛍️ Tiến Hành Thanh Toán
+                  <i className="bi bi-bag-check me-2"></i>Tiến Hành Thanh Toán
                 </button>
                 
                 <button 
                   className="continue-shopping-btn"
                   onClick={goBackToProducts}
                 >
-                  ← Tiếp tục mua sắm
+                  <i className="bi bi-arrow-left me-2"></i>Tiếp tục mua sắm
                 </button>
 
                 <button 
@@ -475,7 +493,7 @@ const Cart = ({ cartItems, updateCartItem, removeFromCart, clearCart, onPageChan
                     }
                   }}
                 >
-                  🗑️ Xóa giỏ hàng
+                  <i className="bi bi-trash me-2"></i>Xóa giỏ hàng
                 </button>
               </div>
             </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import anh8 from '../assets/images/anh8.jpg'; // Import ảnh thật
+import anh8 from '../assets/images/anh8.jpg';
 import './Home.css';
 
 const Home = () => {
@@ -22,7 +22,7 @@ const Home = () => {
           <div className="intro-content">
             <div className="intro-text">
               <div className="intro-block">
-                <h3>🎯 Khám Phá Thế Giới Hương Thơm</h3>
+                <h3><i className="bi bi-compass me-2"></i>Khám Phá Thế Giới Hương Thơm</h3>
                 <p>
                   Tại <strong>PERFUME SHOP</strong>, chúng tôi tin rằng mỗi mùi hương là một câu chuyện, 
                   mỗi chai nước hoa là một tác phẩm nghệ thuật. Với hơn 200 thương hiệu nước hoa cao cấp 
@@ -32,31 +32,39 @@ const Home = () => {
               </div>
 
               <div className="intro-block">
-                <h3>✨ Phép Màu Của Nước Hoa</h3>
+                <h3><i className="bi bi-stars me-2"></i>Phép Màu Của Nước Hoa</h3>
                 <div className="benefits-grid">
                   <div className="benefit-item">
-                    <span className="benefit-icon">💎</span>
+                    <span className="benefit-icon">
+                      <i className="bi bi-gem"></i>
+                    </span>
                     <div>
                       <strong>Tăng Sự Tự Tin</strong>
                       <p>Mùi hương phù hợp giúp bạn tỏa sáng trong mọi hoàn cảnh</p>
                     </div>
                   </div>
                   <div className="benefit-item">
-                    <span className="benefit-icon">🌟</span>
+                    <span className="benefit-icon">
+                      <i className="bi bi-star"></i>
+                    </span>
                     <div>
                       <strong>Thu Hút Ánh Nhìn</strong>
                       <p>Tạo ấn tượng khó phai trong lòng người đối diện</p>
                     </div>
                   </div>
                   <div className="benefit-item">
-                    <span className="benefit-icon">🎭</span>
+                    <span className="benefit-icon">
+                      <i className="bi bi-person-badge"></i>
+                    </span>
                     <div>
                       <strong>Thể Hiện Cá Tính</strong>
                       <p>Mỗi mùi hương kể một câu chuyện riêng về con người bạn</p>
                     </div>
                   </div>
                   <div className="benefit-item">
-                    <span className="benefit-icon">🔮</span>
+                    <span className="benefit-icon">
+                      <i className="bi bi-magic"></i>
+                    </span>
                     <div>
                       <strong>Ghi Dấu Ấn Đặc Biệt</strong>
                       <p>Mùi hương tạo nên những ký ức khó quên</p>
@@ -66,7 +74,7 @@ const Home = () => {
               </div>
 
               <div className="intro-block">
-                <h3>🌹 Hành Trình Cảm Xúc</h3>
+                <h3><i className="bi bi-flower1 me-2"></i>Hành Trình Cảm Xúc</h3>
                 <p>
                   Một chai nước hoa cao cấp không chỉ đơn thuần là mùi hương - đó là một hành trình cảm xúc 
                   với ba tầng hương hòa quyện: <strong>Hương đầu</strong> tươi mới và ấn tượng, 
@@ -76,7 +84,7 @@ const Home = () => {
               </div>
 
               <div className="cta-section">
-                <h3>🚀 Bắt Đầu Hành Trình Của Bạn</h3>
+                <h3><i className="bi bi-rocket-takeoff me-2"></i>Bắt Đầu Hành Trình Của Bạn</h3>
                 <p>
                   Khám phá bộ sưu tập độc quyền của chúng tôi và tìm ra mùi hương phản chiếu chân thực nhất 
                   con người bạn. Từ những hương cổ điển sang trọng đến các xu hướng hiện đại cá tính, 
@@ -97,10 +105,18 @@ const Home = () => {
                   <p>Hương thơm vượt thời gian</p>
                 </div>
                 <div className="floating-notes">
-                  <span className="note note-1">Hoa Hồng</span>
-                  <span className="note note-2">Cam Bergamot</span>
-                  <span className="note note-3">Gỗ Đàn Hương</span>
-                  <span className="note note-4">Vanilla</span>
+                  <span className="note note-1">
+                    <i className="bi bi-flower1 me-1"></i>Hoa Hồng
+                  </span>
+                  <span className="note note-2">
+                    <i className="bi bi-tree me-1"></i>Cam Bergamot
+                  </span>
+                  <span className="note note-3">
+                    <i className="bi bi-tree-fill me-1"></i>Gỗ Đàn Hương
+                  </span>
+                  <span className="note note-4">
+                    <i className="bi bi-droplet me-1"></i>Vanilla
+                  </span>
                 </div>
               </div>
             </div>

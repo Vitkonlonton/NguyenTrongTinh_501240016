@@ -11,7 +11,6 @@ const Orders = () => {
     const loadOrders = () => {
       try {
         const savedOrders = JSON.parse(localStorage.getItem('perfumeShopOrders') || '[]');
-        // Sắp xếp theo thời gian mới nhất
         const sortedOrders = savedOrders.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
         setOrders(sortedOrders);
       } catch (error) {
@@ -24,7 +23,6 @@ const Orders = () => {
 
     loadOrders();
     
-    // Lắng nghe sự kiện storage change (nếu có nhiều tab)
     const handleStorageChange = () => {
       loadOrders();
     };
@@ -71,7 +69,7 @@ const Orders = () => {
         <div className="container">
           <div className="loading-orders">
             <div className="loading-spinner"></div>
-            <p>Đang tải thông tin đơn hàng...</p>
+            <p><i className="bi bi-hourglass-split me-2"></i>Đang tải thông tin đơn hàng...</p>
           </div>
         </div>
       </div>
@@ -82,13 +80,15 @@ const Orders = () => {
     <div className="orders-page">
       <div className="container">
         <div className="orders-header">
-          <h1>📦 Đơn Hàng Đã Đặt</h1>
+          <h1><i className="bi bi-receipt me-2"></i> Đơn Hàng Đã Đặt</h1>
           <p>Theo dõi trạng thái đơn hàng của bạn</p>
         </div>
         
         {orders.length === 0 ? (
           <div className="no-orders-luxury">
-            <div className="no-orders-icon">📭</div>
+            <div className="no-orders-icon">
+              <i className="bi bi-inbox" style={{fontSize: '5rem'}}></i>
+            </div>
             <h3>Bạn chưa có đơn hàng nào</h3>
             <p>Hãy khám phá và mua sắm những sản phẩm tuyệt vời</p>
             <button 
@@ -98,7 +98,7 @@ const Orders = () => {
                 window.dispatchEvent(new HashChangeEvent('hashchange'));
               }}
             >
-              🛍️ Bắt đầu mua sắm
+              <i className="bi bi-bag me-2"></i>Bắt đầu mua sắm
             </button>
           </div>
         ) : (
@@ -106,19 +106,25 @@ const Orders = () => {
             <div className="orders-stats">
               <div className="stat-card">
                 <span className="stat-number">{orders.length}</span>
-                <span className="stat-label">Tổng đơn hàng</span>
+                <span className="stat-label">
+                  <i className="bi bi-receipt me-1"></i>Tổng đơn hàng
+                </span>
               </div>
               <div className="stat-card">
                 <span className="stat-number">
                   {orders.filter(order => order.status === 'Đã giao hàng').length}
                 </span>
-                <span className="stat-label">Đã giao</span>
+                <span className="stat-label">
+                  <i className="bi bi-check-circle me-1"></i>Đã giao
+                </span>
               </div>
               <div className="stat-card">
                 <span className="stat-number">
                   {orders.filter(order => order.status === 'Đang xử lý').length}
                 </span>
-                <span className="stat-label">Đang xử lý</span>
+                <span className="stat-label">
+                  <i className="bi bi-hourglass-split me-1"></i>Đang xử lý
+                </span>
               </div>
             </div>
 
@@ -127,20 +133,34 @@ const Orders = () => {
                 <div key={order.id} className="order-card-luxury">
                   <div className="order-header-luxury">
                     <div className="order-basic-info">
-                      <h3>Đơn hàng #{order.orderNumber || order.id}</h3>
-                      <p className="order-date">📅 {formatDate(order.orderDate)}</p>
+                      <h3>
+                        <i className="bi bi-hash me-2"></i>Đơn hàng #{order.orderNumber || order.id}
+                      </h3>
+                      <p className="order-date">
+                        <i className="bi bi-calendar me-2"></i>{formatDate(order.orderDate)}
+                      </p>
                       <p className={`order-status ${getStatusColor(order.status)}`}>
+                        <i className={`bi ${
+                          order.status === 'Đang xử lý' ? 'bi-hourglass-split' :
+                          order.status === 'Đang giao hàng' ? 'bi-truck' :
+                          order.status === 'Đã giao hàng' ? 'bi-check-circle' : 'bi-x-circle'
+                        } me-2`}></i>
                         {order.status}
                       </p>
                     </div>
                     <div className="order-total-luxury">
                       <strong>{formatPrice(order.total)}</strong>
-                      <p>{order.items.reduce((sum, item) => sum + item.quantity, 0)} sản phẩm</p>
+                      <p>
+                        <i className="bi bi-box-seam me-1"></i>
+                        {order.items.reduce((sum, item) => sum + item.quantity, 0)} sản phẩm
+                      </p>
                     </div>
                   </div>
                   
                   <div className="order-preview-items">
-                    <div className="preview-title">Sản phẩm đã đặt:</div>
+                    <div className="preview-title">
+                      <i className="bi bi-box-seam me-2"></i>Sản phẩm đã đặt:
+                    </div>
                     <div className="preview-items-grid">
                       {order.items.slice(0, 3).map(item => (
                         <div key={item.id} className="preview-item">
@@ -152,11 +172,14 @@ const Orders = () => {
                             }}
                           />
                           <span className="item-name">{item.name}</span>
-                          <span className="item-quantity">x{item.quantity}</span>
+                          <span className="item-quantity">
+                            <i className="bi bi-x"></i>{item.quantity}
+                          </span>
                         </div>
                       ))}
                       {order.items.length > 3 && (
                         <div className="preview-more">
+                          <i className="bi bi-plus-circle me-1"></i>
                           +{order.items.length - 3} sản phẩm khác
                         </div>
                       )}
@@ -168,18 +191,22 @@ const Orders = () => {
                       className="detail-btn-luxury"
                       onClick={() => setSelectedOrder(selectedOrder?.id === order.id ? null : order)}
                     >
-                      {selectedOrder?.id === order.id ? '📖 Thu gọn' : '📖 Xem chi tiết'}
+                      {selectedOrder?.id === order.id ? (
+                        <><i className="bi bi-chevron-up me-2"></i>Thu gọn</>
+                      ) : (
+                        <><i className="bi bi-chevron-down me-2"></i>Xem chi tiết</>
+                      )}
                     </button>
                     
                     {order.status === 'Đang xử lý' && (
                       <button className="cancel-btn-luxury">
-                        ❌ Hủy đơn hàng
+                        <i className="bi bi-x-circle me-2"></i>Hủy đơn hàng
                       </button>
                     )}
                     
                     {order.status === 'Đã giao hàng' && (
                       <button className="review-btn-luxury">
-                        ⭐ Đánh giá
+                        <i className="bi bi-star me-2"></i>Đánh giá
                       </button>
                     )}
                   </div>
@@ -187,7 +214,7 @@ const Orders = () => {
                   {selectedOrder?.id === order.id && (
                     <div className="order-details-luxury">
                       <div className="details-section">
-                        <h4>📋 Chi Tiết Đơn Hàng</h4>
+                        <h4><i className="bi bi-list-check me-2"></i>Chi Tiết Đơn Hàng</h4>
                         <div className="order-items-detailed">
                           {order.items.map(item => (
                             <div key={item.id} className="detailed-item">
@@ -205,7 +232,7 @@ const Orders = () => {
                                 <span className="item-price-detailed">{formatPrice(item.price)}</span>
                               </div>
                               <div className="item-quantity-detailed">
-                                Số lượng: {item.quantity}
+                                <i className="bi bi-x me-1"></i>Số lượng: {item.quantity}
                               </div>
                               <div className="item-total-detailed">
                                 {formatPrice(item.price * item.quantity)}
@@ -216,7 +243,7 @@ const Orders = () => {
                       </div>
 
                       <div className="details-section">
-                        <h4>💰 Tổng Kết Thanh Toán</h4>
+                        <h4><i className="bi bi-calculator me-2"></i>Tổng Kết Thanh Toán</h4>
                         <div className="order-summary-detailed">
                           <div className="summary-row">
                             <span>Tạm tính:</span>
@@ -240,15 +267,30 @@ const Orders = () => {
                       </div>
 
                       <div className="details-section">
-                        <h4>🚚 Thông Tin Giao Hàng</h4>
+                        <h4><i className="bi bi-truck me-2"></i>Thông Tin Giao Hàng</h4>
                         <div className="delivery-info-detailed">
-                          <p><strong>Người nhận:</strong> {order.fullName}</p>
-                          <p><strong>Điện thoại:</strong> {order.phone}</p>
-                          <p><strong>Email:</strong> {order.email}</p>
-                          <p><strong>Địa chỉ:</strong> {order.address}</p>
-                          <p><strong>Phương thức thanh toán:</strong> {
-                            order.paymentMethod === 'cash' ? 'Tiền mặt khi nhận hàng' : 'Chuyển khoản ngân hàng'
-                          }</p>
+                          <p>
+                            <i className="bi bi-person me-2"></i>
+                            <strong>Người nhận:</strong> {order.fullName}
+                          </p>
+                          <p>
+                            <i className="bi bi-phone me-2"></i>
+                            <strong>Điện thoại:</strong> {order.phone}
+                          </p>
+                          <p>
+                            <i className="bi bi-envelope me-2"></i>
+                            <strong>Email:</strong> {order.email}
+                          </p>
+                          <p>
+                            <i className="bi bi-geo-alt me-2"></i>
+                            <strong>Địa chỉ:</strong> {order.address}
+                          </p>
+                          <p>
+                            <i className="bi bi-credit-card me-2"></i>
+                            <strong>Phương thức thanh toán:</strong> {
+                              order.paymentMethod === 'cash' ? 'Tiền mặt khi nhận hàng' : 'Chuyển khoản ngân hàng'
+                            }
+                          </p>
                         </div>
                       </div>
                     </div>

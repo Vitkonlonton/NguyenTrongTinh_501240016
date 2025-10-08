@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import products from '../data/products';
 import './Products.css';
 
-const Products = ({ addToCart }) => {
+const Products = ({ addToCart, addToWishlist, wishlist }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [priceFilter, setPriceFilter] = useState('all');
   const [sortBy, setSortBy] = useState('name');
@@ -35,14 +35,16 @@ const Products = ({ addToCart }) => {
     <div className="products-page">
       <div className="container">
         <div className="page-header">
-          <h1>Bộ Sưu Tập Nước Hoa</h1>
+          <h1><i className="bi bi-collection"></i> Bộ Sưu Tập Nước Hoa</h1>
           <p className="page-subtitle">Khám phá những mùi hương độc đáo và tinh tế</p>
         </div>
         
-        {/* Bộ lọc và tìm kiếm SANG TRỌNG */}
+        {/* Bộ lọc và tìm kiếm */}
         <div className="filters-section-luxury">
           <div className="search-container-luxury">
-            <div className="search-icon">🔍</div>
+            <div className="search-icon">
+              <i className="bi bi-search"></i>
+            </div>
             <input
               type="text"
               placeholder="Tìm kiếm sản phẩm... (ví dụ: CM24)"
@@ -55,14 +57,16 @@ const Products = ({ addToCart }) => {
                 className="clear-search"
                 onClick={() => setSearchTerm('')}
               >
-                ✕
+                <i className="bi bi-x"></i>
               </button>
             )}
           </div>
           
           <div className="filters-container-luxury">
             <div className="filter-group">
-              <label className="filter-label">Lọc theo giá</label>
+              <label className="filter-label">
+                <i className="bi bi-funnel me-1"></i>Lọc theo giá
+              </label>
               <select 
                 value={priceFilter} 
                 onChange={(e) => setPriceFilter(e.target.value)}
@@ -76,7 +80,9 @@ const Products = ({ addToCart }) => {
             </div>
             
             <div className="filter-group">
-              <label className="filter-label">Sắp xếp</label>
+              <label className="filter-label">
+                <i className="bi bi-sort-down me-1"></i>Sắp xếp
+              </label>
               <select 
                 value={sortBy} 
                 onChange={(e) => setSortBy(e.target.value)}
@@ -93,6 +99,7 @@ const Products = ({ addToCart }) => {
         {/* Thông tin kết quả */}
         <div className="results-info">
           <p>
+            <i className="bi bi-info-circle me-1"></i>
             Hiển thị <strong>{filteredProducts.length}</strong> sản phẩm
             {searchTerm && ` cho từ khóa "${searchTerm}"`}
           </p>
@@ -100,40 +107,52 @@ const Products = ({ addToCart }) => {
 
         {/* Danh sách sản phẩm */}
         <div className="products-grid">
-          {filteredProducts.map(product => (
-            <div key={product.id} className="product-card-luxury">
-              <div className="product-image-luxury">
-                <img src={product.image} alt={product.name} />
-                <div className="product-overlay">
+          {filteredProducts.map(product => {
+            const isInWishlist = wishlist.some(item => item.id === product.id);
+            
+            return (
+              <div key={product.id} className="product-card-luxury">
+                <div className="product-image-luxury">
+                  <img src={product.image} alt={product.name} />
+                  <div className="product-overlay">
+                    <button 
+                      className="quick-view-btn"
+                      onClick={() => addToCart(product)}
+                    >
+                      <i className="bi bi-cart-plus me-1"></i>Thêm vào giỏ
+                    </button>
+                  </div>
                   <button 
-                    className="quick-view-btn"
+                    className={`wishlist-heart ${isInWishlist ? 'in-wishlist' : ''}`}
+                    onClick={() => addToWishlist(product)}
+                  >
+                    <i className={`bi ${isInWishlist ? 'bi-heart-fill' : 'bi-heart'}`}></i>
+                  </button>
+                </div>
+                <div className="product-info-luxury">
+                  <h3>{product.name}</h3>
+                  <p className="product-description-luxury">{product.description}</p>
+                  <div className="product-price-luxury">
+                    {formatPrice(product.price)}
+                  </div>
+                  <button 
+                    className="add-to-cart-btn-luxury"
                     onClick={() => addToCart(product)}
                   >
-                    Thêm vào giỏ
+                    <i className="bi bi-cart3 me-2"></i>
+                    Thêm vào giỏ hàng
                   </button>
                 </div>
               </div>
-              <div className="product-info-luxury">
-                <h3>{product.name}</h3>
-                <p className="product-description-luxury">{product.description}</p>
-                <div className="product-price-luxury">
-                  {formatPrice(product.price)}
-                </div>
-                <button 
-                  className="add-to-cart-btn-luxury"
-                  onClick={() => addToCart(product)}
-                >
-                  <span className="cart-icon">🛒</span>
-                  Thêm vào giỏ hàng
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {filteredProducts.length === 0 && (
           <div className="no-products-luxury">
-            <div className="no-products-icon">🔍</div>
+            <div className="no-products-icon">
+              <i className="bi bi-search" style={{fontSize: '4rem'}}></i>
+            </div>
             <h3>Không tìm thấy sản phẩm phù hợp</h3>
             <p>Hãy thử điều chỉnh bộ lọc hoặc từ khóa tìm kiếm</p>
             <button 
@@ -144,7 +163,7 @@ const Products = ({ addToCart }) => {
                 setSortBy('name');
               }}
             >
-              Đặt lại bộ lọc
+              <i className="bi bi-arrow-clockwise me-2"></i>Đặt lại bộ lọc
             </button>
           </div>
         )}

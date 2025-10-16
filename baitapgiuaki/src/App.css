@@ -32,16 +32,7 @@ body {
   width: 100%;
 }
 
-/* Utility classes for responsive */
-.text-center-mobile {
-  text-align: left;
-}
-
-.hidden-mobile {
-  display: block;
-}
-
-/* Responsive */
+/* QUAN TRỌNG: Container responsive tốt hơn */
 @media (max-width: 768px) {
   .container {
     padding: 0 1rem;
@@ -50,23 +41,15 @@ body {
   .main-content {
     margin-top: 140px;
   }
-  
-  .text-center-mobile {
-    text-align: center;
-  }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: 0 0.8rem;
+    padding: 0 0.5rem; /* Giảm padding để tận dụng tối đa width */
   }
   
   .main-content {
     margin-top: 130px;
-  }
-  
-  .hidden-mobile {
-    display: none;
   }
 }
 
@@ -88,4 +71,15 @@ select:focus,
 textarea:focus {
   outline: 2px solid #d32f2f;
   outline-offset: 2px;
+}
+
+/* Utility class để center content trên mobile */
+.mobile-center {
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .mobile-center {
+    text-align: center;
+  }
 }

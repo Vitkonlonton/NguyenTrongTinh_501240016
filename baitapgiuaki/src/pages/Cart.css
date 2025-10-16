@@ -952,3 +952,99 @@
     font-size: 1rem;
   }
 }
+/* Fix cart responsive - Full width trên mobile */
+@media (max-width: 480px) {
+  .cart-page {
+    padding: 140px 0 1rem 0;
+  }
+  
+  .cart-header h1 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+  
+  .cart-header p {
+    font-size: 1rem;
+    text-align: center;
+  }
+  
+  /* QUAN TRỌNG: Cart items full width */
+  .cart-item-luxury {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 1rem;
+    padding: 1rem;
+    width: 100%;
+    margin: 0;
+  }
+  
+  .item-details-luxury h3 {
+    font-size: 1.1rem;
+  }
+  
+  .cart-content {
+    gap: 1rem;
+    padding: 0 0.5rem;
+  }
+  
+  .cart-items-luxury {
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  
+  .cart-sidebar {
+    gap: 1rem;
+  }
+  
+  .coupon-section,
+  .cart-summary-luxury {
+    padding: 1.5rem;
+    border-radius: 15px;
+  }
+  
+  .coupon-input-group {
+    flex-direction: column;
+  }
+  
+  .coupon-input {
+    margin-bottom: 0.5rem;
+  }
+  
+  .available-coupons {
+    justify-content: center;
+  }
+  
+  .checkout-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .checkout-header p {
+    font-size: 1rem;
+  }
+  
+  /* Form checkout responsive */
+  .checkout-form-luxury {
+    padding: 1rem;
+  }
+  
+  .form-grid {
+    gap: 1rem;
+  }
+  
+  .delivery-details {
+    gap: 1rem;
+  }
+  
+  .delivery-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+  
+  .payment-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+}

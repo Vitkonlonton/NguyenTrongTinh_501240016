@@ -670,3 +670,57 @@
     display: none; /* Ẩn floating notes trên mobile nhỏ */
   }
 }
+/* Fix home page responsive */
+@media (max-width: 480px) {
+  .hero-section {
+    height: 40vh;
+  }
+  
+  .hero-content h1 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+    text-align: center;
+  }
+  
+  .section-title {
+    font-size: 1.7rem;
+    text-align: center;
+  }
+  
+  .intro-block h3 {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  
+  .intro-block p {
+    font-size: 1rem;
+    text-align: left;
+  }
+  
+  .cta-section {
+    padding: 1.5rem;
+    text-align: center;
+  }
+  
+  .perfume-image-container {
+    height: 250px;
+    border-radius: 15px;
+  }
+  
+  .floating-notes {
+    display: none;
+  }
+  
+  .benefit-item {
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  .benefit-icon {
+    align-self: center;
+  }
+}
